@@ -12,13 +12,13 @@ lrtEpsRhoBinom(ref, alt, eps, rho)
 
 \item{eps}{estimate of error}
 
-\item{rho}{\rho estimate}
+\item{rho}{rho estimate}
 }
 \value{
 llrt critical value
 }
 \description{
-\code(lrtEpsRhoBinom) returns the critical value of llrt comparing with
-H0: the het is mis-specified or \rho=o.5 & H1: the het has imbalance with estimated \rho
+returns the critical value of llrt comparing with
+H0: the het is mis-specified or rho=o.5 & H1: the het has imbalance with estimated rho
 }
 
