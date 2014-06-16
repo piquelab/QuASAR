@@ -1,13 +1,13 @@
 #' @title critical value for likelihood ratio test with misspecififed genotypes
 #'
 #' @description
-#' \code(lrtEpsRhoBinom) returns the critical value of llrt comparing with 
-#' H0: the het is mis-specified or \rho=o.5 & H1: the het has imbalance with estimated \rho
+#' returns the critical value of llrt comparing with 
+#' H0: the het is mis-specified or rho=o.5 & H1: the het has imbalance with estimated rho
 #'
 #' @param ref reference read count
 #' @param alt alternate read count
 #' @param eps estimate of error
-#' @param rho \rho estimate
+#' @param rho rho estimate
 #' @return llrt critical value
 lrtEpsRhoBinom <- function(ref,alt,eps,rho){
   log.gt <- cbind(g0   = ref * log(1 - eps) + alt * log(eps),

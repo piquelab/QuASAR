@@ -6,9 +6,7 @@
 logLikBetaBinomial2(logit.p, D, R, A)
 }
 \arguments{
-\item{rho}{rho value in [0, 1]}
-
-\item{eps}{estimate of error}
+\item{logit.p}{logit(rho) value in [0, 1]}
 
 \item{D}{dispersion estimate}
 
