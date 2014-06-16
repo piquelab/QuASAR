@@ -6,7 +6,7 @@
 logLikBetaBinomialRhoEps(rho, eps, D, R, A)
 }
 \arguments{
-\item{rho}{rho value \in [0, 1]}
+\item{rho}{rho value in [0, 1]}
 
 \item{eps}{estimate of error}
 
@@ -20,7 +20,7 @@ logLikBetaBinomialRhoEps(rho, eps, D, R, A)
 log likelihood
 }
 \description{
-\code(logLikBetaBinomialRhoEps) returns the log likelihood of reference & alternate read count data
+returns the log likelihood of reference & alternate read count data
 given rho, dispersion, and error
 }
 

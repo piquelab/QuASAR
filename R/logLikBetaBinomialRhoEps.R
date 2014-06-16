@@ -1,10 +1,10 @@
 #' @title log-likelihood of beta-binomial model
 #'
 #' @description
-#' \code(logLikBetaBinomialRhoEps) returns the log likelihood of reference & alternate read count data
+#' returns the log likelihood of reference & alternate read count data
 #' given rho, dispersion, and error
 #'
-#' @param rho rho value \in [0, 1]
+#' @param rho rho value in [0, 1]
 #' @param eps estimate of error
 #' @param D dispersion estimate
 #' @param R reference read count

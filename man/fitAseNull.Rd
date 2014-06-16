@@ -26,6 +26,6 @@ list of genotypes, log genotypes, error estimate, log-likelihood, and the sum of
 log likelihoods
 }
 \description{
-\code(fitAseNull) for a single sample conduct genotyping and estimate sample error
+for a single sample conduct genotyping and estimate sample error
 }
 

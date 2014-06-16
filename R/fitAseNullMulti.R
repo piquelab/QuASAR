@@ -1,7 +1,7 @@
 #' @title fit QuASAR for a multiple samples
 #'
 #' @description
-#' \code(fitAseNull) joint geontype across samples and estimate sample error
+#' joint geontype across samples and estimate sample error
 #'
 #' @param ref matrix of reference read count
 #' @param alt matrix alternate read count

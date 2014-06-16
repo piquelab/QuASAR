@@ -10,13 +10,13 @@ comp.rho(ref, alt, eps)
 
 \item{alt}{integer. alternate allele count}
 
-\item{eps}{float. error estimate \in [0,1]}
+\item{eps}{float. error estimate in [0,1]}
 }
 \value{
-\rho float. elstimate of alternate allele frequency
+rho float. elstimate of alternate allele frequency
 }
 \description{
-\code(comp.rho) given reference and alternate read counts, & an error estimate, return the
+given reference and alternate read counts, & an error estimate, return the
 estimated alternate alle frequency
 }
 

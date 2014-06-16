@@ -6,7 +6,7 @@
 gLogLikBetaBinomial(logit.p, D, R, A)
 }
 \arguments{
-\item{logit.p}{logit(\rho)}
+\item{logit.p}{logit(rho)}
 
 \item{D}{dispersion estimate}
 
@@ -15,10 +15,10 @@ gLogLikBetaBinomial(logit.p, D, R, A)
 \item{A}{alternate read count}
 }
 \value{
-gradient evaulated at logit(\rho)
+gradient evaulated at logit(rho)
 }
 \description{
-\code(gLogLikBetaBinomial) returns the gradient of the log likelihood of reference & alternate
-read count data given logit(\rho) and adispersion estimate.
+returns the gradient of the log likelihood of reference & alternate
+read count data given logit(rho) and adispersion estimate.
 }
 

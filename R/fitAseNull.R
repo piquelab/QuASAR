@@ -1,7 +1,7 @@
 #' @title fit QuASAR for a single sample
 #'
 #' @description
-#' \code(fitAseNull) for a single sample conduct genotyping and estimate sample error
+#' for a single sample conduct genotyping and estimate sample error
 #'
 #' @param ref reference read count
 #' @param alt alternate read count

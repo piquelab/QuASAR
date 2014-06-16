@@ -28,6 +28,6 @@ list of genotypes, log genotypes, vector oferror estimates, log-likelihood, and 
 log likelihoods
 }
 \description{
-\code(fitAseNull) joint geontype across samples and estimate sample error
+joint geontype across samples and estimate sample error
 }
 
