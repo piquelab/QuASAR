@@ -1,6 +1,6 @@
 QuASAR: Quantitative allele specific expression of reads
 ========
-Joint genotyping and inference of ASE for RNA-Seq data.
+Joint genotyping and inference of allele specific expression (ASE) for RNA-Seq data.
 
 ```S
 require(devtools)
