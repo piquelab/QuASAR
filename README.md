@@ -1,4 +1,4 @@
-QuASAR: Quantitative allele specific expression of reads
+QuASAR: Quantitative allele specific analysis of reads
 ========
 Joint genotyping and inference of allele specific expression (ASE) for RNA-Seq data.
 
