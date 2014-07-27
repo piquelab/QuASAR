@@ -8,6 +8,7 @@
 #' @param alt integer. alternate allele count 
 #' @param eps float. error estimate in [0,1]
 #' @return rho float. elstimate of alternate allele frequency
+#' @export
 comp.rho <- function(ref,alt,eps){
   rho <- (ref * (1 - eps) - eps * alt) / ((ref + alt) * (1 - 2 * eps))
   rho[rho<0] <- 0
