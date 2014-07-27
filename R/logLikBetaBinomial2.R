@@ -9,6 +9,7 @@
 #' @param R reference read count
 #' @param A alternate read count
 #' @return log likelihood
+#' @export
 logLikBetaBinomial2 <- function(logit.p,D,R,A){
   p <- plogis(logit.p)
   aux <- (lgamma(R+p*D) + lgamma(A + (1-p)*D) - lgamma(R+A+D) - lgamma(p*D) - lgamma((1-p)*D) + lgamma(D));

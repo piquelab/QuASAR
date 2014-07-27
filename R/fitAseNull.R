@@ -12,6 +12,7 @@
 #' @param fixGprior logical to fix genotype priors across all steps of the algorithm
 #' @return list of genotypes, log genotypes, error estimate, log-likelihood, and the sum of
 #' log likelihoods 
+#' @export
 fitAseNull <- function(ref,alt,eps=0.1,log.gmat,max.it=100,tol=1E-16,fixGprior=TRUE){
   L <- length(ref);
   stopifnot(L == length(alt));

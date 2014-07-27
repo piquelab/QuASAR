@@ -9,6 +9,7 @@
 #' @param eps estimate of error
 #' @param rho rho estimate
 #' @return llrt critical value
+#' @export
 lrtEpsRhoBinom <- function(ref,alt,eps,rho){
   log.gt <- cbind(g0   = ref * log(1 - eps) + alt * log(eps),
                   g1t0 = (ref + alt) * log(0.5),

@@ -13,6 +13,7 @@
 #' @param verbose logical turn on reporting during algorithm iterations
 #' @return list of genotypes, log genotypes, vector oferror estimates, log-likelihood, and the sum of
 #' log likelihoods 
+#' @export
 fitAseNullMulti <- function(ref,alt,eps=rep(0.1,ncol(ref)),log.gmat,max.it=100,tol=1E-16,fixGprior=TRUE,verbose=TRUE){
 	L <- nrow(ref);
 	S <- ncol(ref);

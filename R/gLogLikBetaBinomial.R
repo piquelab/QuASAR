@@ -9,7 +9,7 @@
 #' @param R reference read count
 #' @param A alternate read count
 #' @return gradient evaulated at logit(rho)
-#'
+#' @export
 gLogLikBetaBinomial <- function(logit.p,D,R,A){
   p <- plogis(logit.p)
  # aux <- D * (digamma(R+p*D) - digamma(A + (1-p)*D) - digamma(p*D) + digamma((1-p)*D)) 
