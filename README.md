@@ -84,16 +84,26 @@ The final fields are as follows:
 10. Number of reads not mapping to either allele
 
 ## 3. Running QuASAR
-### Genotyping a single or multiple samples
-```R
-ase.joint <- fitAseNull(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
-```
-```R
-ase.joint <- fitAseNullMulti(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
-```
 
+### Prepare the input samples 
+To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, .  To `fdgf`
+```R
+folderName="~/QuASAR/sampleinput/"
+fileNames=paste0(folderName,dir(folderName,"Et.*gz"))
+ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
+ase.dat.gt <- PrepForGenotyping(ase.dat, min.coverage=5)
+sample.names <- colnames(ase.dat.gt$ref)
+```
+### Genotype multiple samples
 
+```R
+ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
+```
+    
 ### Inference on ASE
+```R
+ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
+```
 ### Sample workflow
 
 
