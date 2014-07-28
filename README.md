@@ -28,8 +28,28 @@ git clone git@github.com:piquelab/QuASAR.git
 ## 2. Preprocessing
 ### Alignment & filtering
 ### Pileups & cleaned pileups
+Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1KG SNP positions):
+
 ```C
-zless SomeSample_1.pileup.clean.bed.gz | head -5
+samtools mpileup -f hg19.fa -l snps.af.bed input.bam > input.pileup
+```
+
+Next, convert the pileup file into bed format and use intersectBed to add the allele frequencies:
+
+```C
+less input.pileup | awk '{ print $$1,$$2-1,$$2,$$3,$$4,$$5,$$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-13,14 | gzip > input.pileup.bed.gz
+```
+
+Finally, run convertPileupToQuasar.R to generate a file of read counts from the SNP position:
+
+```C
+R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
+```
+
+The final file should look something like this:
+
+```C
+zless input.pileup.clean.bed.gz | head -5
 chr1	879910	879911	G	A	rs143853699	0.02	21	0	0
 chr1	892379	892380	G	A	rs150615968	0.0041	22	0	0
 chr1	893384	893385	G	A	rs140972868	0.01	6	0	0
