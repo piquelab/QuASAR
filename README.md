@@ -70,7 +70,7 @@ chr1	894101	894102	A	T	rs188691615	0.01	6	0	0
 chr1	894430	894431	G	A	rs201791495	9e-04	9	0	0
 ```
 
-## 3. Genotyping with QuASAR
+## 3. Running QuASAR
 ### Genotyping a single or multiple samples
 ```R
 ase.joint <- fitAseNull(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
