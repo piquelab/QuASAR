@@ -46,7 +46,7 @@ Raw reads can be aligned to the reference genome using your favorite aligner. Be
 ### Pileups & cleaned pileups
 Note: These steps require [samtools] and [bedtools].
 
-Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1KG SNP positions):
+Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1K genomes SNP positions):
 
 ```C
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
@@ -106,8 +106,8 @@ ase.dat.gt <- PrepForGenotyping(ase.dat, min.coverage=5)
 sample.names <- colnames(ase.dat.gt$ref)
 ```
 
-### Genotype multiple samples
-Genotyping using `fitAseNullMulti` requires a matrix of reference counts and a matrix of alternate counts where where the columns are ordered by sample. The final argument is a matrix of priors for the minor allele frquency, for which we use the 1K genomes MAFs assumed to be at Hardy-Weinberg equilibrium.  
+### Genotyping an individual from multiple samples
+Genotyping an individual using `fitAseNullMulti` requires a matrix of reference counts and a matrix of alternate counts where where the columns are ordered by sample. The final argument is a matrix of priors for the minor allele frquency, for which we use the 1K genomes MAFs assumed to be at Hardy-Weinberg equilibrium.  
 ```R
 ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
 ```
@@ -116,7 +116,7 @@ This function returns a list with the following members:
 names(ase.joint)
 [1] "gt"        "log.gt"    "eps"       "loglik"    "logliksum"
 ```
-where the posterior probability of the genotypes, `gt`, across all samples are acessed as follows:
+where the posterior probability of the genotypes, `gt`, across all samples are accessed as follows:
 ```C
 head(ase.joint$gt)
                g0           g1           g2
@@ -127,7 +127,7 @@ head(ase.joint$gt)
 [5,] 9.435425e-87 9.726281e-10 1.000000e+00
 [6,] 9.999863e-01 1.372351e-05 6.274482e-46
 ```
-g0=homozygote reference, g1=heterozygote, & g2=homozygous alternate. Estimates of sequencing error `eps` are accessed with:
+g0=homozygous reference, g1=heterozygous, & g2=homozygous alternate. Estimates of sequencing error `eps` are accessed with:
 ```C
 head(ase.joint$eps)
 [1] 0.0008748778 0.0007617141 0.0008152132 0.0007819780 0.0008956686
@@ -135,7 +135,7 @@ head(ase.joint$eps)
 ```
 
 ### Inference on ASE
-Conducting inference on ASE with `aseInference` reuquires the posterior probabilities of each genotypes from the previous step `"gt"`, estimates of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
+Using `aseInference` to conduct inference on ASE for an individual requires the posterior probabilities of each genotypes from the previous step `"gt"`, estimates of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
@@ -144,7 +144,7 @@ For each sample, this function returns a list:
 names(ourInferenceData[[1]])
 [1] "dat"        "n.hets"     "dispersion"
 ```
-where `dat` contains estimates of allelic imbalance `betas`, standard errors `betas.se`, & pvalues from an LRT for ASE detailed in <>.
+where `dat` contains estimates of allelic imbalance `betas`, standard errors `betas.se`, & pvalues from an LRT for ASE detailed in [Harvey et al, 2014].
 ```R
  head(ourInferenceData[[1]]$dat)
  annotations.rsID annotations.chr annotations.pos0       betas  betas.se    pval3 
@@ -163,11 +163,13 @@ head(ourInferenceData[[1]]$dispersion)
 [1] 64.07152
 ```
 
-The code for this sample workflow is located in 
-[QuASAR/scripts/exampleWorkflow.R](https://github.com/piquelab/QuASAR/blob/master/scripts/exampleWorkflow.R)
+The code for this sample workflow is located here:
+[scripts/exampleWorkflow.R]
 
 <!-- links -->
+[Harvey et al, 2014]:http://dx.doi.org/10.1101/007492
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
-[scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
 [samtools]:http://samtools.sourceforge.net/
 [bedtools]:https://github.com/arq5x/bedtools2
+[scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
+[scripts/exampleWorkflow.R]:scripts/exampleWorkflow.R
