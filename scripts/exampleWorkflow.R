@@ -52,10 +52,6 @@ out_dat <- data.frame(ase.dat.gt$annotations[, -5], map=ase.joint$gt)
 write.table(out_dat, file='genotypes.txt', row.names=FALSE, col.names=FALSE, quote=FALSE,sep="\t")
 
 
-
-
-
-
 ## Mandatory objects for inference
 ase.dat.final <- list(ref=ase.dat.gt$ref, alt=ase.dat.gt$alt, gmat=ase.dat.gt$gmat, annotations=ase.dat.gt$annotations)
 ase.joint.eps <- ase.joint$eps
@@ -63,7 +59,6 @@ ase.joint.eps <- ase.joint$eps
 n.eps <- length(ase.joint.eps)
 
 sample.names <- colnames(ase.dat.final$ref)
-
 
 test <- aseInference(gts=ase.joint$gt, priors=ase.dat.final$gmat, ref.mat=ase.dat.final$ref, alt.mat=ase.dat.final$alt, eps.vect=ase.joint.eps, min.cov=10, sample.names=sample.names)
 
