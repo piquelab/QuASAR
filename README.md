@@ -3,6 +3,7 @@ QuASAR is an R package, that implements a statistical method for: i) joint genot
 The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throroughput sequencing data. 
 The input data to QuASAR is already a clean up pileup as it will be detailed later. 
 Here, we do not cover in important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
+
 We also want to emphisize that the current software is still in development, we would kindly appreciate any comments and bug reports. 
 
 <!---
