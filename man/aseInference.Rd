@@ -3,10 +3,13 @@
 \alias{aseInference}
 \title{aseInference}
 \usage{
-aseInference(gts, priors, ref.mat, alt.mat, eps.vect, min.cov, sample.names)
+aseInference(gts, eps.vect, priors, ref.mat, alt.mat, min.cov, sample.names,
+  annos)
 }
 \arguments{
 \item{gts}{posterior probabilities of genotypes from QuASAR}
+
+\item{eps.vect}{QuASAR estimates of sequencing error for each sample}
 
 \item{priors}{1K genomes minor allele frequencies as priors}
 
@@ -14,11 +17,11 @@ aseInference(gts, priors, ref.mat, alt.mat, eps.vect, min.cov, sample.names)
 
 \item{alt.mat}{matrix of alternate allele counts}
 
-\item{eps.vect}{QuASAR estimates of sequencing error for each sample}
-
 \item{min.cov}{threshold for the minimum coverage across all samples}
 
 \item{sample.names}{verctor of sample names}
+
+\item{annos}{annotations for all loci}
 }
 \value{
 inference.data list.
