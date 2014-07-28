@@ -86,24 +86,34 @@ The final fields are as follows:
 ## 3. Running QuASAR
 
 ### Prepare the input samples 
-To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter  loci with insufficient coverage across all samples `PrepForGenotyping`.  
+For a test run we provide the following sample data. The following commands will download the data to the current folder:
+
 ```R
-folderName="~/<yourPathHere>/QuASAR/sampleinput/"
-fileNames=paste0(folderName,dir(folderName,"Et.*gz"))
+urlData="http://genome.grid.wayne.edu/quasar/sampleinput/"
+fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
+sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
+```
+
+To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter  loci with insufficient coverage across all samples `PrepForGenotyping`.
+
+```R
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
 ase.dat.gt <- PrepForGenotyping(ase.dat, min.coverage=5)
 sample.names <- colnames(ase.dat.gt$ref)
 ```
+
 ### Genotype multiple samples
 
 ```R
 ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
 ```
-    
+
 ### Inference on ASE
+
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
+
 The code for this sample workflow is located in `QuASAR/scripts/exampleWorkflow.R`
 
 <!-- links -->
