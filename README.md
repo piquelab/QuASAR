@@ -1,5 +1,5 @@
 # QuASAR: Quantitative allele specific analysis of reads
-QuASAR is an R package, that implements a statistical method for: i) genotyping from next-generation sequencing reads, and ii) conducting inference on allelic imbalance at heterozygous sites. The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throughput sequencing data. The input data to QuASAR is a processed pileup file (as detailed later). Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal.
+QuASAR ([Harvey et al, 2014]) is an R package, that implements a statistical method for: i) genotyping from next-generation sequencing reads, and ii) conducting inference on allelic imbalance at heterozygous sites. The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throughput sequencing data. The input data to QuASAR is a processed pileup file (as detailed later). Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal.
 
 We also want to emphasize that the current software is still in development, we would kindly appreciate any comments and bug reports.
 <!---
@@ -46,7 +46,7 @@ Raw reads can be aligned to the reference genome using your favorite aligner. Be
 ### Pileups & cleaned pileups
 Note: These steps require [samtools] and [bedtools].
 
-Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1KG SNP positions):
+Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1K genomes SNP positions):
 
 ```C
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
@@ -98,7 +98,7 @@ fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
-To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnioinExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`):
+To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnionExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`):
 
 ```R
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
@@ -106,23 +106,70 @@ ase.dat.gt <- PrepForGenotyping(ase.dat, min.coverage=5)
 sample.names <- colnames(ase.dat.gt$ref)
 ```
 
-### Genotype multiple samples
-If multiple samples have been sequenced from the same individuals the genotyping calls can be performed across all samples:
-
+### Genotyping an individual from multiple samples
+Genotyping an individual using `fitAseNullMulti` requires a matrix of reference counts and a matrix of alternate counts where where the columns are ordered by sample. The final argument is a matrix of priors for the minor allele frquency, for which we use the 1K genomes MAFs assumed to be at Hardy-Weinberg equilibrium.  
 ```R
 ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
 ```
+This function returns a list with the following members:
+```R
+names(ase.joint)
+[1] "gt"        "log.gt"    "eps"       "loglik"    "logliksum"
+```
+where the posterior probability of the genotypes, `gt`, across all samples are accessed as follows:
+```C
+head(ase.joint$gt)
+               g0           g1           g2
+[1,] 2.870026e-98 1.000000e+00 2.939460e-70
+[2,] 1.465195e-27 7.773259e-04 9.992227e-01
+[3,] 3.732811e-61 4.308038e-07 9.999996e-01
+[4,] 9.992226e-01 7.774208e-04 1.714236e-27
+[5,] 9.435425e-87 9.726281e-10 1.000000e+00
+[6,] 9.999863e-01 1.372351e-05 6.274482e-46
+```
+g0=homozygous reference, g1=heterozygous, & g2=homozygous alternate. Estimates of sequencing error `eps` are accessed with:
+```C
+head(ase.joint$eps)
+[1] 0.0008748778 0.0007617141 0.0008152132 0.0007819780 0.0008956686
+[6] 0.0007597717
+```
 
 ### Inference on ASE
-
+Using `aseInference` to conduct inference on ASE for an individual requires the posterior probabilities of each genotypes from the previous step `"gt"`, estimates of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
+For each sample, this function returns a list:
+```R
+names(ourInferenceData[[1]])
+[1] "dat"        "n.hets"     "dispersion"
+```
+where `dat` contains estimates of allelic imbalance `betas`, standard errors `betas.se`, & pvalues from an LRT for ASE detailed in [Harvey et al, 2014].
+```R
+ head(ourInferenceData[[1]]$dat)
+ annotations.rsID annotations.chr annotations.pos0       betas  betas.se    pval3 
+1        rs2272757            chr1           881626  0.15175892 0.6005410 0.80049721
+2        rs2465128            chr1           981930  0.17948875 0.6445723 0.78065789
+3        rs9442391            chr1           984301 -0.15175892 0.6005410 0.80049721
+4       rs12142199            chr1          1249186 -0.43478406 0.4845478 0.36955958
+5           rs7290            chr1          1477243 -0.99328368 0.5969363 0.09611857
+6           rs7533            chr1          1479332 -0.09853221 0.3981711 0.80455070
+```
+The final members of the list are the number of heterozygotes and the esimtate of dispersion for each sample.
+```R
+head(ourInferenceData[[1]]$n.hets)
+[1] 2856
+head(ourInferenceData[[1]]$dispersion)
+[1] 64.07152
+```
 
-The code for this sample workflow is located in `QuASAR/scripts/exampleWorkflow.R`
+The code for this sample workflow is located here:
+[scripts/exampleWorkflow.R]
 
 <!-- links -->
+[Harvey et al, 2014]:http://dx.doi.org/10.1101/007492
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
-[scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
 [samtools]:http://samtools.sourceforge.net/
-[bedtools]:https://code.google.com/p/bedtools/
+[bedtools]:https://github.com/arq5x/bedtools2
+[scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
+[scripts/exampleWorkflow.R]:scripts/exampleWorkflow.R
