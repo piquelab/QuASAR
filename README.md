@@ -86,7 +86,7 @@ The final fields are as follows:
 ## 3. Running QuASAR
 
 ### Prepare the input samples 
-For a test run we provide the following sample data. The following commands will download the data to the current folder:
+For a test run we provide a small sample dataset. The following commands will download the data to the current folder:
 
 ```R
 urlData="http://genome.grid.wayne.edu/quasar/sampleinput/"
@@ -94,7 +94,7 @@ fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
-To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter  loci with insufficient coverage across all samples `PrepForGenotyping`.
+To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter loci with insufficient coverage across all samples `PrepForGenotyping`.
 
 ```R
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
