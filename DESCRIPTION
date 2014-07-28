@@ -1,10 +1,10 @@
 Package: QuASAR
 Type: Package
 Title: Quantitative Allele Specific Analysis of Reads
-Version: 1.0
+Version: 0.1
 Date: 2014-06-16
 Author: Chris Harvey, Greg Moyerbrailean and Roger Pique-Regi
 Maintainer: Roger Pique-Regi <rpique@gmail.com>
 Description: Joint genotyping, error estimation, and Allele Specific Expression
     inference for multiple RNA-Seq samples.
-License: MIT
+License: MIT + file LICENSE

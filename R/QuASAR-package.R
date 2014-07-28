@@ -3,9 +3,9 @@
 ##' \tabular{ll}{
 ##' Package: \tab QuASAR\cr
 ##' Type: \tab Package\cr
-##' Version: \tab 1.0\cr
+##' Version: \tab 0.1\cr
 ##' Date: \tab 28-07-2014\cr
-##' License: \tab MIT\cr
+##' License: \tab MIT + file LICENSE \cr
 ##' LazyLoad: \tab yes\cr
 ##' }
 ##' 

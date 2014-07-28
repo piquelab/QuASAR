@@ -33,7 +33,6 @@ head(ase.joint$gt)
 
 ## The base-calling error parameters are stored in ase.joint$eps
 
-
 ## Saving the output genotype probabilities
 out_dat <- data.frame(ase.dat.gt$annotations[, -5], map=ase.joint$gt)
 write.table(out_dat, file='genotypes.txt', row.names=FALSE, col.names=FALSE, quote=FALSE,sep="\t")
