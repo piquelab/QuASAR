@@ -3,6 +3,7 @@ QuASAR is an R package, that implements a statistical method for: i) joint genot
 The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throroughput sequencing data. 
 The input data to QuASAR is already a clean up pileup as it will be detailed later. 
 Here, we do not cover in important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
+We also want to emphisize that the current software is still in development, we would kindly appreciate any comments and bug reports. 
 
 <!---
 Prior to analsyis, RNA-Seq data must undergo alignment with a modern aligner, quality filtering, duplicate removal, and the creation of pileups. There are many tools and tutorials available for preprocessing Next Generation Sequencing data, but we will only describe the tools we used and expect the user to have basic familiarity with standard bioinformatics command-line tools. Our goal with this tutorial is to cover the following:
@@ -26,14 +27,19 @@ require(devtools)
 install_github('QuASAR', 'piquelab')
 library('QuASAR')
 ```
-From our experience, installing R packages from GitHub within an R session hosted on an ssh conection can be more troublesome than installing on a local machine. An alternative is to clone this repository then build the package:
+<!---
+Installing R packages from GitHub within an R session has sometimes problems. Alternatively, you can clone/fork this repository then and then build the package:
+-->
 
 ```C
 git clone git@github.com:piquelab/QuASAR.git
+R CMD build QuASAR
 ```
 
 ## 2. Preprocessing
 ### Alignment & filtering
+
+
 ### Pileups & cleaned pileups
 ```C
 zless SomeSample_1.pileup.clean.bed.gz | head -5
