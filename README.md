@@ -28,9 +28,8 @@ require(devtools)
 install_github('QuASAR', 'piquelab')
 library('QuASAR')
 ```
-<!---
+
 Installing R packages from GitHub within an R session has sometimes problems. Alternatively, you can clone/fork this repository then and then build the package:
--->
 
 ```C
 git clone git@github.com:piquelab/QuASAR.git
