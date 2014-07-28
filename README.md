@@ -28,12 +28,6 @@ library('QuASAR')
 ```
 
 However, this method is occasionally problematic. Alternatively, you can clone/fork this repository and then build the package:
-
-```C
-git clone git@github.com:piquelab/QuASAR.git
-R CMD build QuASAR
-```
-or
 ```C
 git clone https://github.com/piquelab/QuASAR.git
 R CMD build QuASAR
