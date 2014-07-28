@@ -136,7 +136,7 @@ head(ase.joint$eps)
 
     
 ### Inference on ASE
-Conducting inference on ASE with `aseInference` reuquires the posterior probabilities of each genotypes from the previous step `"gt"`, estiamtes of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
+Conducting inference on ASE with `aseInference` reuquires the posterior probabilities of each genotypes from the previous step `"gt"`, estimates of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
