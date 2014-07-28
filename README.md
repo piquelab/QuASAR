@@ -1,5 +1,5 @@
 # QuASAR: Quantitative allele specific analysis of reads
-QuASAR is an R package, that implements a statistical method for: i) genotyping from next-generation sequencing reads, and ii) conducting inference on allelic imbalance at heterozygous sites. The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throughput sequencing data. The input data to QuASAR is a processed pileup file (as detailed later). Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal.
+QuASAR ([Harvey et al, 2014]) is an R package, that implements a statistical method for: i) genotyping from next-generation sequencing reads, and ii) conducting inference on allelic imbalance at heterozygous sites. The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throughput sequencing data. The input data to QuASAR is a processed pileup file (as detailed later). Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal.
 
 We also want to emphasize that the current software is still in development, we would kindly appreciate any comments and bug reports.
 <!---
