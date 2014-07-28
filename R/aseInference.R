@@ -4,17 +4,18 @@
 #' using genotypes from QuASAR, conduct inference on allelic imbalance 
 #'
 #' @param gts posterior probabilities of genotypes from QuASAR
+#' @param eps.vect QuASAR estimates of sequencing error for each sample
 #' @param priors 1K genomes minor allele frequencies as priors 
 #' @param ref.mat matrix of reference allele counts
 #' @param alt.mat matrix of alternate allele counts
-#' @param eps.vect QuASAR estimates of sequencing error for each sample
 #' @param min.cov threshold for the minimum coverage across all samples
 #' @param sample.names verctor of sample names
+#' @param annos annotations for all loci
 #' @return inference.data list. 
 #'
 #' @export
 
-aseInference <- function(gts, priors, ref.mat, alt.mat, eps.vect, min.cov, sample.names){
+aseInference <- function(gts, eps.vect, priors, ref.mat, alt.mat, min.cov, sample.names, annos){
   ##################################################################
   ## inference
   ##################################################################
@@ -33,7 +34,7 @@ aseInference <- function(gts, priors, ref.mat, alt.mat, eps.vect, min.cov, sampl
     het <- gts[coverage.ind, 2]
     het.ind <- (het > 0.99)
     numb.hets <- sum(het.ind)
-    annotations <- ase.dat.final$annotations[coverage.ind, ][het.ind, ]
+    annotations <- annos[coverage.ind, ][het.ind, ]
 
     cat("============================================================\n", sep="")
     cat("==========Processing Sample: ", this.sample, "==========\n", sep="")
