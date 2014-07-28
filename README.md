@@ -38,6 +38,7 @@ R CMD build QuASAR
 
 ## 2. Preprocessing
 ### Alignment & filtering
+Raw reads can be aligned to the reference genome using your favorite aligner (e.g., [BWA-MEM]). Because allele-specific analysis is extremely sensitive to read biases and mapping errors, we strongly recommend adding steps to remove PCR duplicates and to remove reads aligning to areas with known mappability issues (e.g., [Degner et al, 2009]).
 
 
 ### Pileups & cleaned pileups
@@ -96,4 +97,7 @@ ase.joint <- fitAseNullMulti(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
 ### Sample workflow
 
 
-
+<!-- links -->
+[BWA-MEM]:http://bio-bwa.sourceforge.net/
+[samtools rmdup]:http://samtools.sourceforge.net/
+[Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
