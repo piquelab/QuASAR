@@ -98,7 +98,7 @@ fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
-To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnioinExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`):
+To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnioinExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`). Note: Note: These steps require [bedtools].
 
 ```R
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
@@ -107,7 +107,7 @@ sample.names <- colnames(ase.dat.gt$ref)
 ```
 
 ### Genotype multiple samples
-Genotyping using `fitAseNullMulti` requires a matrix of reference counts and a matrix of alternate counts where where the columns are ordered by sample. The final argument is a matrix of priors for the minor allele frquency, for which we use the 1K genomes MAFs assumed to be at Hardy-Weinberg equilibrium.  
+Genotyping using `fitAseNullMulti` requires a matrix of reference counts and a matrix of alternate counts where the columns are ordered by sample. The final argument is a matrix of priors for the minor allele frequency, for which we use the 1K genomes MAFs assumed to be at Hardy-Weinberg equilibrium.  
 ```R
 ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
 ```
