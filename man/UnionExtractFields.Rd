@@ -6,13 +6,21 @@
 UnionExtractFields(fileList, combine = FALSE)
 }
 \arguments{
-\item{fileList}{list of clean bed files as described in the QuASAR vingette}
+\item{fileList}{List of files *.quasar.in.gz}
+
+\item{combine}{Collapses all samples into a single sample if true. Default is false}
 }
 \value{
-blah blah blah
+returns a R list with the following elements:
+Ref: Matrix with number of reads matching the reference allele.
+Alt: Matrix with number of reads matching the alternate allele.
+Err: Matrix with number of reads matchine neither the ref. or alt. allele.
+anno: Object with the annotation for the SNPs.
 }
 \description{
-from a list of clean bed files, find the intersection of all loci and return a list with reference, alternate, and error counts for each loci
-across all samples
+From a list of files (fileList), find the union of all loci and return a list with the data prepared to run QuASAR.
+}
+\author{
+Chris Harvey
 }
 
