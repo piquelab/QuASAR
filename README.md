@@ -134,13 +134,38 @@ head(ase.joint$eps)
 [6] 0.0007597717
 ```
 
+    
 ### Inference on ASE
-
+Conducting inference on ASE with `aseInference` reuquires the posterior probabilities of each genotypes from the previous step `"gt"`, estiamtes of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
+For each sample, this function returns a list:
+```R
+names(ourInferenceData[[1]])
+[1] "dat"        "n.hets"     "dispersion"
+```
+where `dat` contains estimates of allelic imbalance `betas`, standard errors `betas.se`, & pvalues from an LRT for ASE detailed in <>.
+```R
+ head(ourInferenceData[[1]]$dat)
+ annotations.rsID annotations.chr annotations.pos0       betas  betas.se    pval3 
+1        rs2272757            chr1           881626  0.15175892 0.6005410 0.80049721
+2        rs2465128            chr1           981930  0.17948875 0.6445723 0.78065789
+3        rs9442391            chr1           984301 -0.15175892 0.6005410 0.80049721
+4       rs12142199            chr1          1249186 -0.43478406 0.4845478 0.36955958
+5           rs7290            chr1          1477243 -0.99328368 0.5969363 0.09611857
+6           rs7533            chr1          1479332 -0.09853221 0.3981711 0.80455070
+```
+The final members of the list are the number of heterozygotes per sample `"n.hets"` and the esimtate of dispersion.
+```R
+head(ourInferenceData[[1]]$n.hets)
+[1] 2856
+head(ourInferenceData[[1]]$dispersion)
+[1] 64.07152
+```
 
-The code for this sample workflow is located in [QuASAR/scripts/exampleWorkflow.R](https://github.com/piquelab/QuASAR/blob/master/scripts/exampleWorkflow.R)
+The code for this sample workflow is located in 
+[QuASAR/scripts/exampleWorkflow.R](https://github.com/piquelab/QuASAR/blob/master/scripts/exampleWorkflow.R)
 
 <!-- links -->
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
