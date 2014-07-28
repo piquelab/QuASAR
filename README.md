@@ -170,4 +170,4 @@ The code for this sample workflow is located in
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
 [scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
 [samtools]:http://samtools.sourceforge.net/
-[bedtools]:https://code.google.com/p/bedtools/
+[bedtools]:https://github.com/arq5x/bedtools2
