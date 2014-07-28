@@ -140,7 +140,7 @@ head(ase.joint$eps)
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
 
-The code for this sample workflow is located in `QuASAR/scripts/exampleWorkflow.R`
+The code for this sample workflow is located in [QuASAR/scripts/exampleWorkflow.R](https://github.com/piquelab/QuASAR/blob/master/scripts/exampleWorkflow.R)
 
 <!-- links -->
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
