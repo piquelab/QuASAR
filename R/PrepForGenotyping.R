@@ -2,7 +2,7 @@
 ##' @param ase.dat data from UnionExtractFields.R 
 ##' @param min.coverage minimumm coverage across all combined sample for locus inclusion 
 ##' @param dampen.priors prevents underflow 
-##' @return blah blah blah
+##' @return a list with reference allele counts, alternate allele counts, a matrix of gt priors, and annotations
 ##' @export
 PrepForGenotyping <- function(ase.dat, min.coverage, dampen.priors=TRUE){
 	ref.all <- ase.dat[[1]]
