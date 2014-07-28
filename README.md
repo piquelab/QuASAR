@@ -104,8 +104,6 @@ ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.da
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
-### Sample workflow
-
 
 <!-- links -->
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
