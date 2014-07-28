@@ -156,7 +156,7 @@ where `dat` contains estimates of allelic imbalance `betas`, standard errors `be
 5           rs7290            chr1          1477243 -0.99328368 0.5969363 0.09611857
 6           rs7533            chr1          1479332 -0.09853221 0.3981711 0.80455070
 ```
-The final members of the list are the number of heterozygotes per sample `"n.hets"` and the esimtate of dispersion.
+The final members of the list are the number of heterozygotes and the esimtate of dispersion for each sample.
 ```R
 head(ourInferenceData[[1]]$n.hets)
 [1] 2856
