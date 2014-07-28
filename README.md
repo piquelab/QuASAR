@@ -1,8 +1,8 @@
 # QuASAR: Quantitative allele specific analysis of reads
 QuASAR is an R package, that implements a statistical method for: i) joint genotyping across sequencing datasets of the same individual, ii) identifying heterozygous loci, and iii) conducting inference on allelic imbalance. 
 The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throroughput sequencing data. 
-The input data to QuASAR is already a clean up pileup as it will be detailed later. Here, we do not cover important in depth 
-important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
+The input data to QuASAR is already a clean up pileup as it will be detailed later. 
+Here, we do not cover in important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
 
 <!---
 Prior to analsyis, RNA-Seq data must undergo alignment with a modern aligner, quality filtering, duplicate removal, and the creation of pileups. There are many tools and tutorials available for preprocessing Next Generation Sequencing data, but we will only describe the tools we used and expect the user to have basic familiarity with standard bioinformatics command-line tools. Our goal with this tutorial is to cover the following:
