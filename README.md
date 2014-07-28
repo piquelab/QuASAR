@@ -107,10 +107,31 @@ sample.names <- colnames(ase.dat.gt$ref)
 ```
 
 ### Genotype multiple samples
-If multiple samples have been sequenced from the same individuals the genotyping calls can be performed across all samples:
-
+Genotyping using `fitAseNullMulti` requires a matrix of reference counts and a matrix of alternate counts where where the columns are ordered by sample. The final argument is a matrix of priors for the minor allele frquency, for which we use the 1K genomes MAFs assumed to be at Hardy-Weinberg equilibrium.  
 ```R
 ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
+```
+This function returns a list with the following members:
+```R
+names(ase.joint)
+[1] "gt"        "log.gt"    "eps"       "loglik"    "logliksum"
+```
+where the posterior probability of the genotypes, `gt`, across all samples are acessed as follows:
+```C
+head(ase.joint$gt)
+               g0           g1           g2
+[1,] 2.870026e-98 1.000000e+00 2.939460e-70
+[2,] 1.465195e-27 7.773259e-04 9.992227e-01
+[3,] 3.732811e-61 4.308038e-07 9.999996e-01
+[4,] 9.992226e-01 7.774208e-04 1.714236e-27
+[5,] 9.435425e-87 9.726281e-10 1.000000e+00
+[6,] 9.999863e-01 1.372351e-05 6.274482e-46
+```
+g0=homozygote reference, g1=heterozygote, & g2=homozygous alternate. Estimtaes of seqeunceing error `eps` are accessed with:
+```C
+head(ase.joint$eps)
+[1] 0.0008748778 0.0007617141 0.0008152132 0.0007819780 0.0008956686
+[6] 0.0007597717
 ```
 
 ### Inference on ASE
