@@ -48,7 +48,17 @@ Using the samtools mpileup command, create a pileup file from aligned reads. Pro
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
 ```
 
-The pileup then needs to be converted into the input format required by QuASAR. An example of how to do so can be found here: scripts/quasarPreprocess.sh
+Next, convert the pileup file into bed format and use intersectBed to include the allele frequencies from a bed file. The bed file with allele frequences should be five colums: 1-3) coordinate, 4) SNP ID, 5) allele frequency. The awk filter step (below) removes positions not covered by a read, positions covered by indels, and reference skips:
+
+```C
+less input.pileup.gz | awk -v OFS='\t' '{ if ($4>0 && $5 !~ /[^\^][<>]/ && $5 !~ /\+[0-9]+[ACGTNacgtn]+/ && $5 !~ /-[0-9]+[ACGTNacgtn]+/ && $5 !~ /[^\^]\*/) print $1,$2-1,$2,$3,$4,$5,$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-14 | gzip > input.pileup.bed.gz
+```
+
+Finally, get the read counts at each position, and, if desired, perform any additional filtering. The result will be the input file for QuASAR. An example processing script is provided here: scripts/convertPileupToQuasar.R.
+
+```C
+R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
+```
 
 The final file should look something like this:
 
