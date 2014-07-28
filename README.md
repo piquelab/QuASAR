@@ -53,7 +53,7 @@ Next, convert the pileup file into bed format and use intersectBed to include th
 less input.pileup.gz | awk -v OFS='\t' '{ if ($4>0 && $5 !~ /[^\^][<>]/ && $5 !~ /\+[0-9]+[ACGTNacgtn]+/ && $5 !~ /-[0-9]+[ACGTNacgtn]+/ && $5 !~ /[^\^]\*/) print $1,$2-1,$2,$3,$4,$5,$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-14 | gzip > input.pileup.bed.gz
 ```
 
-Finally, run convertPileupToQuasar.R to generate a file of read counts at each SNP position:
+Finally, clean up the pileup and get read counts at each position. This will be the input file for QuASAR. An example processing script is provided in scripts/convertPileupToQuasar.R.
 
 ```C
 R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
