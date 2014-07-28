@@ -1,5 +1,13 @@
-
-UnionExtractFields_test <- function(fileList, combine=FALSE){			
+#' @title UnionExtractFields
+#'
+#' @description
+#' from a list of clean bed files, find the intersection of all loci and return a list with reference, alternate, and error counts for each loci   
+#' across all samples
+#' @param fileList list of clean bed files as described in the QuASAR vingette
+#' @return  
+#'
+#' @export
+UnionExtractFields <- function(fileList, combine=FALSE){			
 	#browser()
 	tmpFile <- scan(pipe("mktemp -t"),character(0))
 	system(paste("less ", paste(fileList, collapse=" "), " | grep -v -w '^chr\\|^NA' | cut -f 1-3,6-7 | sortBed -i stdin | uniq | gzip > ", tmpFile))
