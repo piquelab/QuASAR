@@ -1,8 +1,8 @@
 # QuASAR: Quantitative allele specific analysis of reads
 QuASAR is an R package, that implements a statistical method for: i) joint genotyping across sequencing datasets of the same individual, ii) identifying heterozygous loci, and iii) conducting inference on allelic imbalance. 
 The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throroughput sequencing data. 
-The input data to QuASAR is already a clean up pileup as it will be detailed later. 
-Here, we do not cover in important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
+The input data to QuASAR is a processed pileup files (as will be detailed later). 
+Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
 
 We also want to emphisize that the current software is still in development, we would kindly appreciate any comments and bug reports. 
 
@@ -29,7 +29,7 @@ install_github('QuASAR', 'piquelab')
 library('QuASAR')
 ```
 
-Installing R packages from GitHub within an R session has sometimes problems. Alternatively, you can clone/fork this repository then and then build the package:
+Installing R packages from GitHub within an R session has problems sometimes. Alternatively, you can clone/fork this repository then and then build the package:
 
 ```C
 git clone git@github.com:piquelab/QuASAR.git
@@ -38,7 +38,7 @@ R CMD build QuASAR
 
 ## 2. Preprocessing
 ### Alignment & filtering
-Raw reads can be aligned to the reference genome using your favorite aligner (e.g., [BWA-MEM]). Because allele-specific analysis is extremely sensitive to read biases and mapping errors, we strongly recommend adding steps to remove PCR duplicates and to remove reads aligning to areas with known mappability issues (e.g., [Degner et al, 2009]).
+Raw reads can be aligned to the reference genome using your favorite aligner. Because allele-specific analysis is extremely sensitive to read biases and mapping errors, we strongly recommend adding steps to remove PCR duplicates and to remove reads aligning to areas with known mappability issues (e.g., [Degner et al, 2009]).
 
 
 ### Pileups & cleaned pileups
@@ -48,22 +48,12 @@ Using the samtools mpileup command, create a pileup file from aligned reads. Pro
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
 ```
 
-Next, convert the pileup file into bed format and use intersectBed to include the allele frequencies from a bed file. The awk filter step removes positions not covered, positions covered by indels, and reference skips:
-
-```C
-less input.pileup.gz | awk -v OFS='\t' '{ if ($4>0 && $5 !~ /[^\^][<>]/ && $5 !~ /\+[0-9]+[ACGTNacgtn]+/ && $5 !~ /-[0-9]+[ACGTNacgtn]+/ && $5 !~ /[^\^]\*/) print $1,$2-1,$2,$3,$4,$5,$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-14 | gzip > input.pileup.bed.gz
-```
-
-Finally, clean up the pileup and get read counts at each position. This will be the input file for QuASAR. An example processing script is provided in scripts/convertPileupToQuasar.R.
-
-```C
-R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
-```
+The pileup then needs to be converted into the input format required by QuASAR. An example of how to do so can be found here: scripts/quasarPreprocess.sh
 
 The final file should look something like this:
 
 ```C
-zless input.pileup.clean.bed.gz | head -5
+zless input.quasar.in.gz | head -5
 chr1	879910	879911	G	A	rs143853699	0.02	21	0	0
 chr1	892379	892380	G	A	rs150615968	0.0041	22	0	0
 chr1	893384	893385	G	A	rs140972868	0.01	6	0	0
@@ -79,9 +69,9 @@ The final fields are as follows:
 5. Alternate allele
 6. SNP ID
 7. SNP allele frequency
-8. Number of reference reads
-9. Number of alternate reads
-10. Number of reads not matching reference or alternate
+8. Number of reads mapping to the reference allele
+9. Number of read mapping to the alternate allele
+10. Number of reads not mapping to either allele
 
 ## 3. Running QuASAR
 ### Genotyping a single or multiple samples
@@ -98,6 +88,4 @@ ase.joint <- fitAseNullMulti(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
 
 
 <!-- links -->
-[BWA-MEM]:http://bio-bwa.sourceforge.net/
-[samtools rmdup]:http://samtools.sourceforge.net/
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
