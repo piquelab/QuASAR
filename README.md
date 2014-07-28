@@ -98,7 +98,7 @@ fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
-To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnionExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`):
+To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnionExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`). Note: these functions utilize calls to [bedtools].
 
 ```R
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
