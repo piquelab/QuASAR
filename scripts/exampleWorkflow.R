@@ -4,7 +4,6 @@
 folderName="~/QuASAR/sampleinput/"
 fileNames=paste0(folderName,dir(folderName,"Et.*gz"))
 
-
 ##################################################################    
 ## 1.) Prepare RNA-Seq samples
 ##################################################################
