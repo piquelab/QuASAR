@@ -54,7 +54,7 @@ Next, convert the pileup file into bed format and use intersectBed to include th
 less input.pileup.gz | awk -v OFS='\t' '{ if ($4>0 && $5 !~ /[^\^][<>]/ && $5 !~ /\+[0-9]+[ACGTNacgtn]+/ && $5 !~ /-[0-9]+[ACGTNacgtn]+/ && $5 !~ /[^\^]\*/) print $1,$2-1,$2,$3,$4,$5,$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-14 | gzip > input.pileup.bed.gz
 ```
 
-Finally, get the read counts at each position, and, if desired, perform any additional filtering. The result will be the input file for QuASAR. An example processing script is provided here: scripts/convertPileupToQuasar.R.
+Finally, get the read counts at each position, and, if desired, perform any additional filtering. The result will be the input file for QuASAR. An example processing script is provided here: [scripts/convertPileupToQuasar.R].
 
 ```C
 R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
@@ -84,18 +84,38 @@ The final fields are as follows:
 10. Number of reads not mapping to either allele
 
 ## 3. Running QuASAR
-### Genotyping a single or multiple samples
+
+### Prepare the input samples 
+For a test run we provide a small sample dataset. The following commands will download the data to the current folder:
+
 ```R
-ase.joint <- fitAseNull(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
-```
-```R
-ase.joint <- fitAseNullMulti(finalref, finalalt, log.gmat=log(ase.dat.gt$gmat))
+urlData="http://genome.grid.wayne.edu/quasar/sampleinput/"
+fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
+sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
+To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter loci with insufficient coverage across all samples `PrepForGenotyping`.
+
+```R
+ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
+ase.dat.gt <- PrepForGenotyping(ase.dat, min.coverage=5)
+sample.names <- colnames(ase.dat.gt$ref)
+```
+
+### Genotype multiple samples
+
+```R
+ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
+```
 
 ### Inference on ASE
-### Sample workflow
 
+```R
+ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
+```
+
+The code for this sample workflow is located in `QuASAR/scripts/exampleWorkflow.R`
 
 <!-- links -->
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
+[scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R

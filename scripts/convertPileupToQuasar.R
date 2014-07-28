@@ -1,18 +1,10 @@
-##################################################################
-## Generate read counts covering reference and alternate alleles
-## from a bed-formatted pilup file
-##################################################################
+###################################################################
+## Generate read counts covering reference and alternate alleles ##
+## from a bed-formatted pilup file 															 ##
+###################################################################
 
-#' @title Get base call quality score
-#'
-#' @description
-#' Get the numerical base call quality score form the reported ascii value
-#'
-#' @param char ascii character value
-#' @return integer value of quality score
+# Get the numerical base call quality score form the reported ascii value
 qual <- function(char) { strtoi(charToRaw(char),16L)-33 };
-
-##################################################################
 
 ## Default values
 mincov <- 4				# Minimum coverage
@@ -42,9 +34,9 @@ pileup <- pileup[indMatch, c("chr", "pos-1", "pos", "ref", "alt", "rsID",
 stopifnot(mean(indMatch)>0.8) ## Stop if too many errors
 rm(indMatch)
 
-# Duplicates can arise from 3 determined reasons: tri+ alleleic SNPs,
+# Duplicates can arise for (at least) 3 reasons: tri+ alleleic SNPs,
 # indels (should already be filtered), and incongruencies between 
-# genome reference and 1KG reference
+# genome assembly reference allele and 1KG reference allele
 d1 <- duplicated(paste(pileup$chr, pileup$pos, sep=":"))
 d2 <- duplicated(paste(pileup$chr, pileup$pos, sep=":"), fromLast=T)
 pileup <- pileup[!(d1 | d2), ]
@@ -91,6 +83,6 @@ pileup <- pileup[order(pileup$chr, pileup$pos), c("chr", "pos-1", "pos",
 
 ## Output the clean pileup file
 oName <- gsub(".*/", "", gsub(".pileup.bed.gz", "", pileupFile));
-outFile <- paste(oName, ".pileup.clean.bed.gz", sep="");
+outFile <- paste(oName, ".quasar.in.gz", sep="");
 write.table(pileup, gzfile(outFile), quote=F, col.names=F, 
 	row.names=F, sep="\t")
