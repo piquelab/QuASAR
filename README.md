@@ -86,9 +86,9 @@ The final fields are as follows:
 ## 3. Running QuASAR
 
 ### Prepare the input samples 
-To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, .  To `fdgf`
+To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter  loci with insufficient coverage across all samples `PrepForGenotyping`.  
 ```R
-folderName="~/QuASAR/sampleinput/"
+folderName="~/<yourPathHere>/QuASAR/sampleinput/"
 fileNames=paste0(folderName,dir(folderName,"Et.*gz"))
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
 ase.dat.gt <- PrepForGenotyping(ase.dat, min.coverage=5)
@@ -104,6 +104,7 @@ ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.da
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
+The code for this sample workflow is located in `QuASAR/scripts/exampleWorkflow.R`
 
 <!-- links -->
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
