@@ -4,7 +4,7 @@
 #' from a list of clean bed files, find the intersection of all loci and return a list with reference, alternate, and error counts for each loci   
 #' across all samples
 #' @param fileList list of clean bed files as described in the QuASAR vingette
-#' @return  
+#' @return blah blah blah 
 #'
 #' @export
 UnionExtractFields <- function(fileList, combine=FALSE){			
