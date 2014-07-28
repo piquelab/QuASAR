@@ -1,11 +1,7 @@
 # QuASAR: Quantitative allele specific analysis of reads
-QuASAR is an R package, that implements a statistical method for: i) joint genotyping across sequencing datasets of the same individual, ii) identifying heterozygous loci, and iii) conducting inference on allelic imbalance. 
-The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throroughput sequencing data. 
-The input data to QuASAR is a processed pileup files (as will be detailed later). 
-Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
+QuASAR is an R package, that implements a statistical method for: i) genotyping from next-generation sequencing reads, and ii) conducting inference on allelic imbalance at heterozygous sites. The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throughput sequencing data. The input data to QuASAR is a processed pileup file (as detailed later). Here, we do not cover in depth important pre-processing steps such as choice of the aligner, read filtering and duplicate removal.
 
-We also want to emphisize that the current software is still in development, we would kindly appreciate any comments and bug reports. 
-
+We also want to emphasize that the current software is still in development, we would kindly appreciate any comments and bug reports.
 <!---
 Prior to analsyis, RNA-Seq data must undergo alignment with a modern aligner, quality filtering, duplicate removal, and the creation of pileups. There are many tools and tutorials available for preprocessing Next Generation Sequencing data, but we will only describe the tools we used and expect the user to have basic familiarity with standard bioinformatics command-line tools. Our goal with this tutorial is to cover the following:
 
@@ -23,17 +19,23 @@ Prior to analsyis, RNA-Seq data must undergo alignment with a modern aligner, qu
 
 ## 1. Installation
 
+To install from within an R session:
+
 ```R
 require(devtools)
 install_github('QuASAR', 'piquelab')
 library('QuASAR')
 ```
 
-Installing R packages from GitHub within an R session has problems sometimes. Alternatively, you can clone/fork this repository then and then build the package:
-
+However, this method is occasionally problematic. Alternatively, you can clone/fork this repository and then build the package:
 ```C
-git clone git@github.com:piquelab/QuASAR.git
+git clone https://github.com/piquelab/QuASAR.git
 R CMD build QuASAR
+```
+then in R,
+```R
+install.packages('QuASAR_x.y.tar.gz')
+library(QuASAR)
 ```
 
 ## 2. Preprocessing
@@ -42,13 +44,15 @@ Raw reads can be aligned to the reference genome using your favorite aligner. Be
 
 
 ### Pileups & cleaned pileups
+Note: These steps require [samtools] and [bedtools].
+
 Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1KG SNP positions):
 
 ```C
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
 ```
 
-Next, convert the pileup file into bed format and use intersectBed to include the allele frequencies from a bed file. The bed file with allele frequences should be five colums: 1-3) coordinate, 4) SNP ID, 5) allele frequency. The awk filter step (below) removes positions not covered by a read, positions covered by indels, and reference skips:
+Next, convert the pileup file into bed format and use intersectBed to include the allele frequencies from a bed file. The bed file with allele frequencies should be five columns: 1-3) coordinate, 4) SNP ID, 5) allele frequency. The awk filter step (below) removes positions not covered by a read, positions covered by indels, and reference skips:
 
 ```C
 less input.pileup.gz | awk -v OFS='\t' '{ if ($4>0 && $5 !~ /[^\^][<>]/ && $5 !~ /\+[0-9]+[ACGTNacgtn]+/ && $5 !~ /-[0-9]+[ACGTNacgtn]+/ && $5 !~ /[^\^]\*/) print $1,$2-1,$2,$3,$4,$5,$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-14 | gzip > input.pileup.bed.gz
@@ -60,7 +64,7 @@ Finally, get the read counts at each position, and, if desired, perform any addi
 R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
 ```
 
-The final file should look something like this:
+Here is an example of how the final file should look:
 
 ```C
 zless input.quasar.in.gz | head -5
@@ -71,16 +75,16 @@ chr1	894101	894102	A	T	rs188691615	0.01	6	0	0
 chr1	894430	894431	G	A	rs201791495	9e-04	9	0	0
 ```
 
-The final fields are as follows:
-1. Chromosome
-2. Start position
-3. End position
-4. Reference allele
-5. Alternate allele
-6. SNP ID
-7. SNP allele frequency
-8. Number of reads mapping to the reference allele
-9. Number of read mapping to the alternate allele
+The final fields are as follows: 
+1. Chromosome 
+2. Start position 
+3. End position 
+4. Reference allele 
+5. Alternate allele 
+6. SNP ID 
+7. SNP allele frequency 
+8. Number of reads mapping to the reference allele 
+9. Number of reads mapping to the alternate allele 
 10. Number of reads not mapping to either allele
 
 ## 3. Running QuASAR
@@ -94,7 +98,7 @@ fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
-To run the provided sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated loci `UnioinExtractFields`, and to filter loci with insufficient coverage across all samples `PrepForGenotyping`.
+To run the sample data, or any data, we provide a few helper functions to merge samples across the union of all annotated sites (`UnioinExtractFields`), and to filter sites with insufficient coverage across all samples (`PrepForGenotyping`):
 
 ```R
 ase.dat <- UnionExtractFields(fileNames, combine=TRUE)
@@ -103,6 +107,7 @@ sample.names <- colnames(ase.dat.gt$ref)
 ```
 
 ### Genotype multiple samples
+If multiple samples have been sequenced from the same individuals the genotyping calls can be performed across all samples:
 
 ```R
 ase.joint <- fitAseNullMulti(ase.dat.gt$ref, ase.dat.gt$alt, log.gmat=log(ase.dat.gt$gmat))
@@ -119,3 +124,5 @@ The code for this sample workflow is located in `QuASAR/scripts/exampleWorkflow.
 <!-- links -->
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
 [scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
+[samtools]:http://samtools.sourceforge.net/
+[bedtools]:https://code.google.com/p/bedtools/
