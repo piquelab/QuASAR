@@ -83,6 +83,6 @@ pileup <- pileup[order(pileup$chr, pileup$pos), c("chr", "pos-1", "pos",
 
 ## Output the clean pileup file
 oName <- gsub(".*/", "", gsub(".pileup.bed.gz", "", pileupFile));
-outFile <- paste(oName, ".pileup.clean.bed.gz", sep="");
+outFile <- paste(oName, ".quasar.in.gz", sep="");
 write.table(pileup, gzfile(outFile), quote=F, col.names=F, 
 	row.names=F, sep="\t")
