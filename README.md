@@ -1,5 +1,11 @@
 # QuASAR: Quantitative allele specific analysis of reads
-QuASAR is an R package, that implements a statistical method for: i) joint genotyping across sequencing datasets of the same individual, ii) identifying heterozygous loci, and iii) conducting inference on allelic imbalance. Prior to analsyis, RNA-Seq data must undergo alignment with a modern aligner, quality filtering, duplicate removal, and the creation of pileups. There are many tools and tutorials available for preprocessing Next Generation Sequencing data, but we will only describe the tools we used and expect the user to have basic familiarity with standard bioinformatics command-line tools. Our goal with this tutorial is to cover the following:
+QuASAR is an R package, that implements a statistical method for: i) joint genotyping across sequencing datasets of the same individual, ii) identifying heterozygous loci, and iii) conducting inference on allelic imbalance. 
+The sequencing data can be RNA-seq, DNase-seq, ATAC-seq or any other type of high-throroughput sequencing data. 
+The input data to QuASAR is already a clean up pileup as it will be detailed later. Here, we do not cover important in depth 
+important pre-processing steps such as choice of the aligner, read filtering and duplicate removal. 
+
+<!---
+Prior to analsyis, RNA-Seq data must undergo alignment with a modern aligner, quality filtering, duplicate removal, and the creation of pileups. There are many tools and tutorials available for preprocessing Next Generation Sequencing data, but we will only describe the tools we used and expect the user to have basic familiarity with standard bioinformatics command-line tools. Our goal with this tutorial is to cover the following:
 
 1. Installing QuASAR
 2. Preprocessing 
@@ -11,6 +17,7 @@ QuASAR is an R package, that implements a statistical method for: i) joint genot
    * Sample workflow
 
 **Quick-start**: Users comfortable processing RNA-Seq data to the level of pileups should skip to the second step of preprocessing. 
+-->
 
 ## 1. Installation
 
