@@ -127,7 +127,7 @@ head(ase.joint$gt)
 [5,] 9.435425e-87 9.726281e-10 1.000000e+00
 [6,] 9.999863e-01 1.372351e-05 6.274482e-46
 ```
-g0=homozygote reference, g1=heterozygote, & g2=homozygous alternate. Estimtaes of seqeunceing error `eps` are accessed with:
+g0=homozygote reference, g1=heterozygote, & g2=homozygous alternate. Estimtaes of sequencing error `eps` are accessed with:
 ```C
 head(ase.joint$eps)
 [1] 0.0008748778 0.0007617141 0.0008152132 0.0007819780 0.0008956686
