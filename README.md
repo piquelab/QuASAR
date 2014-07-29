@@ -64,7 +64,7 @@ Finally, get the read counts at each position, and, if desired, perform any addi
 R --vanilla --args input.pileup.bed.gz < convertPileupToQuasar.R
 ```
 
-Here is an example of how the final file should look:
+Here is an example of how the QuASAR infput file should look:
 
 ```C
 zless input.quasar.in.gz | head -5
@@ -75,7 +75,7 @@ chr1	894101	894102	A	T	rs188691615	0.01	6	0	0
 chr1	894430	894431	G	A	rs201791495	9e-04	9	0	0
 ```
 
-The final fields are as follows: 
+The fields are as follows: 
 1. Chromosome 
 2. Start position 
 3. End position 
@@ -90,11 +90,12 @@ The final fields are as follows:
 ## 3. Running QuASAR
 
 ### Prepare the input samples 
-For a test run we provide a small sample dataset. The following commands will download the data to the current folder:
+For a test run we provide a small sample dataset containing 6 samples from the same individual. 
+The following commands will download the data to the current folder:
 
 ```R
 urlData="http://genome.grid.wayne.edu/quasar/sampleinput/"
-fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
+fileNames <- paste0("t",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
 ```
 
