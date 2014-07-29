@@ -8,8 +8,9 @@
 
 
 urlData="http://genome.grid.wayne.edu/quasar/sampleinput/"
-fileNames <- paste0("EtOH",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
+fileNames <- paste0("t",c(2,4,6,12,18,24),"hr_Huvec_Rep1.quasar.in.gz")
 sapply(fileNames,function (ii) download.file(paste0(urlData,ii),ii))
+
 
 ##################################################################    
 ## 2.) Load data into an R object
