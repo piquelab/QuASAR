@@ -128,13 +128,21 @@ head(ase.joint$gt)
 [5,] 9.435425e-87 9.726281e-10 1.000000e+00
 [6,] 9.999863e-01 1.372351e-05 6.274482e-46
 ```
-g0=homozygous reference, g1=heterozygous, & g2=homozygous alternate. Estimates of sequencing error `eps` for each sample are:
+
+g0=homozygous reference, g1=heterozygous, & g2=homozygous alternate. To save the output genotype probabilities together with the SNP annotation, we do:                                                                                                
+```R
+out_dat <- data.frame(ase.dat.gt$annotations[, -5], map=ase.joint$gt)
+write.table(out_dat, file='genotypes.txt', row.names=FALSE, col.names=FALSE, quote=FALSE,sep="\t")
+```
+
+Estimates of error parameters `eps` for each sample are:
+
 ```C
 ase.joint$eps
 [1] 0.0008748778 0.0007617141 0.0008152132 0.0007819780 0.0008956686
 [6] 0.0007597717
 ```
-TODO: SNP file id
+
 
 ### Inference on ASE
 Using `aseInference` to conduct inference on ASE for an individual requires the posterior probabilities of each genotypes from the previous step `"gt"`, estimates of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
