@@ -46,7 +46,7 @@ Raw reads can be aligned to the reference genome using your favorite aligner. Be
 ### Pileups & cleaned pileups
 Note: These steps require [samtools] and [bedtools].
 
-Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1K genomes SNP positions):
+Using the samtools mpileup command, create a pileup file from aligned reads. Provide a fasta-formatted reference genome (hg19.fa) and a bed file of positions you wish to pileup on (e.g., 1K genomes SNP positions [1KG snp file]):
 
 ```C
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
@@ -127,24 +127,25 @@ head(ase.joint$gt)
 [5,] 9.435425e-87 9.726281e-10 1.000000e+00
 [6,] 9.999863e-01 1.372351e-05 6.274482e-46
 ```
-g0=homozygous reference, g1=heterozygous, & g2=homozygous alternate. Estimates of sequencing error `eps` are accessed with:
+g0=homozygous reference, g1=heterozygous, & g2=homozygous alternate. Estimates of sequencing error `eps` for each sample are:
 ```C
-head(ase.joint$eps)
+ase.joint$eps
 [1] 0.0008748778 0.0007617141 0.0008152132 0.0007819780 0.0008956686
 [6] 0.0007597717
 ```
+TODO: SNP file id
 
 ### Inference on ASE
 Using `aseInference` to conduct inference on ASE for an individual requires the posterior probabilities of each genotypes from the previous step `"gt"`, estimates of sequencing error for each sample `"eps"`, the same priors used in the previous step, reference counts, alternate counts, minimum coverage, sample names, and variant annotations. 
 ```R
 ourInferenceData <- aseInference(gts=ase.joint$gt, eps.vect=ase.joint$eps, priors=ase.dat.gt$gmat, ref.mat=ase.dat.gt$ref, alt.mat=ase.dat.gt$alt, min.cov=10, sample.names=sample.names, annos=ase.dat.gt$annotations)
 ```
-For each sample, this function returns a list:
+This function returns a list where each element corresponds to an input sample:
 ```R
 names(ourInferenceData[[1]])
 [1] "dat"        "n.hets"     "dispersion"
 ```
-where `dat` contains estimates of allelic imbalance `betas`, standard errors `betas.se`, & pvalues from an LRT for ASE detailed in [Harvey et al, 2014].
+where `dat` contains estimates of allelic imbalance `betas`, standard errors `betas.se`, & pvalues from an LRT for ASE detailed in [Harvey et al, 2014]. Note that the number of rows (SNPs) in each sample corresponds to the the number of heterozygous SNPs passing a minimum coverage filter. 
 ```R
  head(ourInferenceData[[1]]$dat)
  annotations.rsID annotations.chr annotations.pos0       betas  betas.se    pval3 
@@ -173,3 +174,4 @@ The code for this sample workflow is located here:
 [bedtools]:https://github.com/arq5x/bedtools2
 [scripts/convertPileupToQuasar.R]:scripts/convertPileupToQuasar.R
 [scripts/exampleWorkflow.R]:scripts/exampleWorkflow.R
+[1KG snp file]:http://genome.grid.wayne.edu/centisnps/1kgSnps.html
