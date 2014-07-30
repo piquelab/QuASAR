@@ -130,7 +130,7 @@ aseInference <- function(gts, eps.vect, priors, ref.mat, alt.mat, min.cov, sampl
     ## return data frame
     rsID <- annotations
     betas <- betas.beta.binom
-    temp <- list(dat=data.frame(annotations$rsID, annotations$chr, annotations$pos0, betas, betas.se, pval3), n.hets=numb.hets, dispersion= Dmax2)
+    temp <- list(dat=data.frame(annotations$rsID, annotations$chr, annotations$pos0, betas, betas.se, pval2), n.hets=numb.hets, dispersion= Dmax2)
 
 
   }) ## Returns a list of data & metaData
