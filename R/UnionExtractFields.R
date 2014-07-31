@@ -13,7 +13,7 @@
 UnionExtractFields <- function(fileList, combine=FALSE){			
 	#browser()
 	tmpFile <- scan(pipe("mktemp -t"),character(0))
-	system(paste("less ", paste(fileList, collapse=" "), " | grep -v -w '^chr\\|^NA' | cut -f 1-3,6-7 | sortBed -i stdin | uniq | gzip > ", tmpFile))
+	system(paste("zcat ", paste(fileList, collapse=" "), " | grep -v -w '^chr\\|^NA' | cut -f 1-3,6-7 | sortBed -i stdin | uniq | gzip > ", tmpFile))
 	anno <- read.table(gzfile(tmpFile),sep="\t",as.is=T)	
 	aux <- sapply(fileList,function(fn){			
 				#fn <- fileList[1]
