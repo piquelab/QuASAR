@@ -74,10 +74,6 @@ pileup$errors <- as.integer(nchar(mapply(gsub, paste('[^ACGT]', sep=""),
 	'', pileup$read.alleles.clean))) - (pileup$alt.matches + pileup$ref.matches)
 
 ## Reorder by position so chr names appear right
-chrList <- unique(pileup$chr)
-chrList <- paste("chr", sort(as.numeric(gsub("chr", "", chrList))), sep="")
-factor(chrList, levels=chrList)
-pileup$chr <- factor(pileup$chr, levels=chrList)
 pileup <- pileup[order(pileup$chr, pileup$pos), c("chr", "pos-1", "pos", 
 	"ref", "alt", "rsID", "af", "ref.matches", "alt.matches", "errors")];
 
