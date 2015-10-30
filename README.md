@@ -52,7 +52,7 @@ Using the samtools mpileup command, create a pileup file from aligned reads. Pro
 samtools mpileup -f hg19.fa -l snps.af.bed input.bam | gzip > input.pileup.gz
 ```
 
-Next, convert the pileup file into bed format and use intersectBed to include the allele frequencies from a bed file. The bed file with allele frequencies should be five columns: 1-3) coordinate, 4) SNP ID, 5) allele frequency. The awk filter step (below) removes positions not covered by a read, positions covered by indels, and reference skips:
+Next, convert the pileup file into bed format and use intersectBed to include the allele frequencies from a bed file. The bed file with allele frequencies should be seven columns: 1-3) coordinate, 4) SNP ID, 5) reference allele, 6) alternate allele, 7) allele frequency. This can be the same [1KG snp file] used in the pileup stage. The awk filter step (below) removes positions not covered by a read, positions covered by indels, and reference skips:
 
 ```C
 less input.pileup.gz | awk -v OFS='\t' '{ if ($4>0 && $5 !~ /[^\^][<>]/ && $5 !~ /\+[0-9]+[ACGTNacgtn]+/ && $5 !~ /-[0-9]+[ACGTNacgtn]+/ && $5 !~ /[^\^]\*/) print $1,$2-1,$2,$3,$4,$5,$6}' | sortBed -i stdin | intersectBed -a stdin -b snps.af.bed -wo | cut -f 1-7,11-14 | gzip > input.pileup.bed.gz
