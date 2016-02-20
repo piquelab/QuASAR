@@ -177,7 +177,7 @@ The code for this sample workflow is located here:
 [scripts/exampleWorkflow.R]
 
 <!-- links -->
-[Harvey et al, 2014]:http://biorxiv.org/content/early/2014/07/29/007492
+[Harvey et al, 2014]:http://biorxiv.org/content/early/2014/12/05/007492
 [Degner et al, 2009]:http://www.ncbi.nlm.nih.gov/pubmed/19808877
 [samtools]:http://samtools.sourceforge.net/
 [bedtools]:https://github.com/arq5x/bedtools2
