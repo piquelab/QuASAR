@@ -7,3 +7,5 @@ The current software is still in development and we will kindly appreciate any c
 <!-- links -->
 [Harvey et al, 2015]:http://bioinformatics.oxfordjournals.org/content/31/8/1235
 [mpra.R]:mpra.R
+[Tewhey et al,2016]:https://www.ncbi.nlm.nih.gov/pubmed/27259153
+
