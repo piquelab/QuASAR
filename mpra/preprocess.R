@@ -46,6 +46,7 @@ allele_count_5 <- subset(allele_count,  R>= 5 & A>=5)
 y_100 <- subset(allele_count_5, R+A>=100)
 y_100 <- transform(y_100, DNA_prop=R/(A+R), logit_prop=log2(R/A))
 mpra_alt_Filt <- merge(mpra_alt, y_100, by="rsID")
+## 
 dna_mpra_Filt <- rbind(mpra_ref_Filt, mpra_alt_Filt)
 
 allele_count <- dcast(RC_ref, rsID ~ Allele_class, value.var="DNA", sum)
@@ -59,6 +60,7 @@ allele_count_5 <- subset(allele_count,  R>= 5 & A>=5)
 y_100 <- subset(allele_count_5, R+A>=100)
 y_100 <- transform(y_100, DNA_prop=R/(A+R), logit_prop=log2(R/A))
 RC_alt_Filt <- merge(RC_alt, y_100, by="rsID")
+##
 dna_RC_Filt <- rbind(RC_ref_Filt, RC_alt_Filt)
 
 ####
@@ -114,43 +116,3 @@ allele_count <- dcast(RC_alt, rsID ~ Allele_class, value.var="RNA", sum)
 allele_count_5 <- subset(allele_count,  R>= 5 & A>=5)
 RC_alt_Filt <- merge(RC_alt, allele_count_5, by="rsID")
 RC_Filt <- rbind(RC_ref_Filt, RC_alt_Filt)
-
-#####
-#####
-chrom <- fread('~/piquelab/data/RefGenome/hg19.chromSizes.bed')
-chrom <- as.data.frame(chrom)
-regions <- ddply(chrom, c("V1"), function(x) {
-  x_n <- (1:x$V3)
-  x_n$bins <- as.data.frame(seq(1,x$V3, by=200))
-}) 
-colnames(regions) <- c("chr", "pos")
-regions <- transform(regions, pos1=pos+200)
-okgSnpsDT <- fread('~/piquelab/gmb/SNPs/1KG/20130502/1KG_SNPs_20130502.bed')
-okgSnps <- as.data.frame(okgSnpsDT)
-names(okgSnps) <- c("chr", "pos", "pos1", "rsID", "ref", "alt", "maf")
-rm(okgSnpsDT)
-okgSnps <- okgSnps[,-c(5:7)]
-#are some snps not mapping because the rsID is actually chr:pos
-mpra_Filt_chrsnps <- mpra_Filt[grep("chr",mpra_Filt$rsID),]
-x <- strsplit(mpra_Filt_chrsnps$rsID, split=":")
-mpra_Filt_chrsnps$chr <- sapply(x, function(y) { y[1] })
-mpra_Filt_chrsnps$pos1<- sapply(x, function(y) { y[2] })
-mpra_Filt_chrsnps$pos1 <- as.numeric(mpra_Filt_chrsnps$pos1)
-mpra_Filt_chrsnps <- transform(mpra_Filt_chrsnps, pos=pos1-1)
-mpra_Filt_chrsnps1 <- merge(mpra_Filt_chrsnps, okgSnps, by=c("chr","pos","pos1"))
-mpra_Filt_nochr <- subset(mpra_Filt, !(mpra_Filt$rsID %in% c(mpra_Filt_chrsnps1$rsID.x,mpra_Filt_chrsnps1$rsID.y )))
-mpra_Filt_chrsnps <- mpra_Filt_chrsnps1[,c(22,5:21)]
-names(mpra_Filt_chrsnps)[1] <- "rsID"
-mpra_Filt <- rbind(mpra_Filt_nochr,mpra_Filt_chrsnps)
-
-RC_Filt_chrsnps <- RC_Filt[grep("chr",RC_Filt$rsID),]
-x <- strsplit(RC_Filt_chrsnps$rsID, split=":")
-RC_Filt_chrsnps$chr <- sapply(x, function(y) { y[1] })
-RC_Filt_chrsnps$pos1<- sapply(x, function(y) { y[2] })
-RC_Filt_chrsnps$pos1 <- as.numeric(RC_Filt_chrsnps$pos1)
-RC_Filt_chrsnps <- transform(RC_Filt_chrsnps, pos=pos1-1)
-RC_Filt_chrsnps1 <- merge(RC_Filt_chrsnps, okgSnps, by=c("chr","pos","pos1"))
-RC_Filt_nochr <- subset(RC_Filt, !(RC_Filt$rsID %in% c(RC_Filt_chrsnps1$rsID.x, RC_Filt_chrsnps1$rsID.y)))
-RC_Filt_chrsnps <- RC_Filt_chrsnps1[,c(22,5:21)]
-names(RC_Filt_chrsnps)[1] <- "rsID"
-RC_Filt <- rbind(RC_Filt_nochr,RC_Filt_chrsnps)
