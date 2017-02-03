@@ -4,25 +4,17 @@ library(QuASAR)
 library(qqman)
 
 ## Import and preprocess the data by first running preprocess.R
-## source(preprocess.R)
+## Here we already have it saved as a text file as example
+HepG2 <- read.table("http://genome.grid.wayne.edu/quasar/samplempra/HepG2.mpra.txt",sep='\t',as.is=T,header=T)
 
-#Hepg2  Forward
-dd <- unique(mpra_Filt[,-c(2:11)])
-aux <- fitQuasarMpra(dd$R,dd$A,dd$DNA_prop)
-zzz <- cbind(dd,aux)
+## Fitting the QuASAR model
+HepG2.res <- fitQuasarMpra(HepG2$R,HepG2$A,HepG2$DNA_prop)
 
-#Hepg2  Reverse
-dd <- unique(RC_Filt[,-c(2:11)])
-aux <- fitQuasarMpra(dd$R,dd$A,dd$DNA_prop)
-zzz_RC <- cbind(dd,aux)
-
-## Number of significant hits below 0.1
-sum(zzz$padj_quasar<0.1)
-sum(zzz_RC$padj_quasar<0.1)
+## Number of significant hits 10% FDR
+sum(HepG2.res$padj_quasar<0.1)
 
 ## QQ-plot 
-qq(zzz$pval3)
+qq(HepG2.res$pval3)
 
-qq(zzz_RC$pval3)
 
 
