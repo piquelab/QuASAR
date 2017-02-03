@@ -1,7 +1,9 @@
 # QuASAR-MPRA: Accurate allele-specific analysis for massively parallel  reporter assays
 We have further developed our method for allele specific analysis QuASAR (quantitative allele-specific analysis of reads) ([Harvey et al, 2015]) to analyze allele specific signals in barcoded read counts data from MPRAs. Using this approach, we can take into account the uncertainty on the original plasmid proportions, over-dispersion, and sequencing errors. Here, we demonstrate how to use QuASAR-MPRA to analyze the MPRA data by [Tewhey et al,2016].
 
-The current software is still in development and we will kindly appreciate any comments and bug reports. We assume that you already have installed the QuASAR library. The [mpra.R] script contains the instructions to run the test, and [preprocessing.R] contains the steps we did to preprocess the HepG2 data for the forward strand in [Tewhey et al,2016] in this example. 
+The current software is still in development and we will kindly appreciate any comments and bug reports. We assume that you already have installed the QuASAR library. 
+
+The [mpra.R] script contains the instructions to run the test. As an example we provide the HepG2 data for the forward strand in [Tewhey et al,2016].[preprocessing.R] contains the steps to prepare this input file.
 
 ```R
 library(QuASAR)
