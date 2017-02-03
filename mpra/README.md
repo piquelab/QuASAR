@@ -21,10 +21,14 @@ qq(HepG2.res$pval3)
 
 ```
 
-To fit the model we use the `fitQuasarMpra` function that needs three vectors: `ref` = number of RNA reads for the reference allele, `alt` = number of RNA reads for the alternate allele, `prop` the reference DNA proportion in the plasmid library. 
+To fit the model we use the `fitQuasarMpra` function that needs three input vectors: 
+- `ref` = number of RNA reads for the reference allele 
+- `alt` = number of RNA reads for the alternate allele 
+- `prop` = reference DNA proportion in the plasmid library
 
 <!-- links -->
 [Harvey et al, 2015]:http://bioinformatics.oxfordjournals.org/content/31/8/1235
 [mpra.R]:mpra.R
+[process.R]:process.R
 [Tewhey et al,2016]:https://www.ncbi.nlm.nih.gov/pubmed/27259153
 
