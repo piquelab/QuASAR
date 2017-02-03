@@ -26,6 +26,25 @@ To fit the model we use the `fitQuasarMpra` function that needs three input vect
 - `alt` = number of RNA reads for the alternate allele 
 - `prop` = reference DNA proportion in the plasmid library
 
+The returned data frame `HepG2.res` has the following fileds:
+- `bin` total coverage bin used
+- `betas.beta.binom`  logit transfomation of the RNA allelic skew
+- `betas_se` standard error for the beta parameter estimate
+- `betas_z` zscore for `betas.beta.binom` -plogis(`propr`) 
+- `pval3` p.value 
+- `padj_quasar` BH adjusted p.value 
+
+```R
+> head(HepG2.res)
+                  bin betas.beta.binom  betas_se    betas_z       pval3 padj_quasar
+1   (2.7e+03,3.3e+03]      -0.12164712 0.1409832 -0.2849424 0.774655868   1.0000000
+2   (2.1e+03,2.7e+03]      -0.22659942 0.1630645 -1.0884486 0.273956397   1.0000000
+3  (3.3e+03,3.96e+03]      -0.05672033 0.1282004 -0.6543586 0.513012947   1.0000000
+4 (7.56e+03,2.22e+06]      -0.46219112 0.2338646 -0.1999347 0.838163133   1.0000000
+5   (2.7e+03,3.3e+03]      -0.04063415 0.1403660  0.8889998 0.376112030   1.0000000
+6             (0,859]      -1.17993132 0.5370852 -2.8797701 0.001298818   0.1951728
+```
+
 <!-- links -->
 [Harvey et al, 2015]:http://bioinformatics.oxfordjournals.org/content/31/8/1235
 [mpra.R]:mpra.R
