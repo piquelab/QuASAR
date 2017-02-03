@@ -1,24 +1,11 @@
-#processing
-#DNA library 
-#summed replicate counts
-#require ref+alt counts >100 
-#require 5 counts each ref and alt
-#DNA_prop = ref/(ref+alt)
-#RNA library
-#require being in DNA library
-#require 5 counts each ref and alt
+#This script shows does the preprocessing for the HepG2 cell-line data from 
+#Tewhey et al. The other cell-lines can be processed in a similar manner. 
 
 library(data.table)
 
 ## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE75nnn/GSE75661/suppl/GSE75661_79k_collapsed_counts.txt.gz
 
 MPRA_counts <- fread("curl 'ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE75nnn/GSE75661/suppl/GSE75661_79k_collapsed_counts.txt.gz' | zcat")
-
-##transform(MPRA_counts, DNA = Plasmid_r1 + Plasmid_r2 + Plasmid_r3 + Plasmid_r4 + Plasmid_r5 )
-##transform(MPRA_counts, RNA.HepG2 = HepG2_r1 + HepG2_r2 + HepG2_r3 + HepG2_r4 + HepG2_r5 )
-##transform(MPRA_counts, RNA.NA12878 = NA12878_r1 + NA12878_r2 + NA12878_r3 + NA12878_r4 + NA12878_r5 )
-##transform(MPRA_counts, RNA.NA19239 = NA19239_r1 + NA19239_r2 + NA19239_r3 + NA19239_r4 + NA19239_r5 )
-
 
 ## Preprocessing DNA
 mpra <- MPRA_counts[,c(1:6)]
@@ -126,4 +113,11 @@ allele_count <- dcast(RC_alt, rsID ~ Allele_class, value.var="RNA", sum)
 allele_count_5 <- subset(allele_count,  R>= 5 & A>=5)
 RC_alt_Filt <- merge(RC_alt, allele_count_5, by="rsID")
 RC_Filt <- rbind(RC_ref_Filt, RC_alt_Filt)
+
+## Last step for the object needed to run QuASAR:
+HepG2 <- unique(mpra_Filt[,-c(2:11)])
+
+HepG2_RC <- unique(RC_Filt[,-c(2:11)])
+
+##write.table(HepG2,file=gzfile("mpra/HepG2.mpra.txt.gz"),row.names=F,quote=F,sep="\t")
 
