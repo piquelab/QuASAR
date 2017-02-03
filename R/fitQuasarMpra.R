@@ -20,7 +20,6 @@
 #' @export
 #'
 #' @examples
-#' fitQuasarMpra(ref,alt,prop,eps=0.001,nbreaks=10)
 #' 
 fitQuasarMpra <- function(ref,alt,prop=0.5,eps=0.001,nbreaks=10){
   tot <- ref + alt;

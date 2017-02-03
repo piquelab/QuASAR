@@ -1,3 +1,13 @@
+#processing
+#DNA library 
+#summed replicate counts
+#require ref+alt counts >100 
+#require 5 counts each ref and alt
+#DNA_prop = ref/(ref+alt)
+#RNA library
+#require being in DNA library
+#require 5 counts each ref and alt
+
 library(data.table)
 
 ## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE75nnn/GSE75661/suppl/GSE75661_79k_collapsed_counts.txt.gz
@@ -116,3 +126,4 @@ allele_count <- dcast(RC_alt, rsID ~ Allele_class, value.var="RNA", sum)
 allele_count_5 <- subset(allele_count,  R>= 5 & A>=5)
 RC_alt_Filt <- merge(RC_alt, allele_count_5, by="rsID")
 RC_Filt <- rbind(RC_ref_Filt, RC_alt_Filt)
+
